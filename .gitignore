@@ -1,3 +1,4 @@
+*.nohup
 *.pyc
 *.pyo
 *.o
@@ -7,5 +8,6 @@
 .vscode
 .catkin_tools/
 devel/
+train/tasks/semantic/log/
 logs/
 external.hpp

@@ -7,6 +7,8 @@ import yaml
 import sys
 import numpy as np
 import torch
+from matplotlib import pyplot as plt
+import cv2
 import __init__ as booger
 
 from tasks.semantic.modules.ioueval import iouEval
@@ -16,7 +18,7 @@ from common.laserscan import SemLaserScan
 splits = ["train", "valid", "test"]
 
 if __name__ == '__main__':
-  parser = argparse.ArgumentParser("./evaluate_iou.py")
+  parser = argparse.ArgumentParser("./evaluate_iou_s3d.py")
   parser.add_argument(
       '--dataset', '-d',
       type=str,
@@ -88,9 +90,10 @@ if __name__ == '__main__':
   # get number of interest classes, and the label mappings
   class_strings = DATA["labels"]
   class_remap = DATA["learning_map"]
+  class_remap_s3d = DATA["learning_map_s3d"]
   class_inv_remap = DATA["learning_map_inv"]
   class_ignore = DATA["learning_ignore"]
-  nr_classes = len(class_inv_remap)
+  nr_classes = 9 #len(class_inv_remap)
 
   # make lookup table for mapping
   maxkey = 0
@@ -99,12 +102,19 @@ if __name__ == '__main__':
       maxkey = key
   # +100 hack making lut bigger just in case there are unknown labels
   remap_lut = np.zeros((maxkey + 100), dtype=np.int32)
+  remap_s3d = np.zeros((100), dtype=np.int32)
   for key, data in class_remap.items():
     try:
       remap_lut[key] = data
     except IndexError:
       print("Wrong key ", key)
-  print(remap_lut)
+  for key, data in class_remap_s3d.items():
+    try:
+      remap_s3d[key] = data
+    except IndexError:
+      print("Wrong key (s3d)", key)
+
+#   print(remap_lut)
 
   # create evaluator
   ignore = []
@@ -176,18 +186,22 @@ if __name__ == '__main__':
     label = SemLaserScan(project=False)
     label.open_scan(scan_file)
     label.open_label(label_file)
-    u_label_sem = remap_lut[label.sem_label]  # remap to xentropy format
-    if FLAGS.limit is not None:
-      u_label_sem = u_label_sem[:FLAGS.limit]
+    u_label_sem = label.sem_label  # remap to xentropy format
+    # u_label_sem = remap_lut[label.sem_label]  # remap to xentropy format
+    # if FLAGS.limit is not None:
+    #   u_label_sem = u_label_sem[:FLAGS.limit]
+
+    # S3d的label是0-8一共9个类别, 不需要经过remap_lut
     print("label:{0}".format(np.bincount(label.sem_label)))
 
     # open prediction
     pred = SemLaserScan(project=False)
     pred.open_scan(scan_file)
     pred.open_label(pred_file)
-    u_pred_sem = remap_lut[pred.sem_label]  # remap to xentropy format
+    u_pred_sem = remap_s3d[remap_lut[pred.sem_label]]  # remap to xentropy format
     if FLAGS.limit is not None:
       u_pred_sem = u_pred_sem[:FLAGS.limit]
+    # 预测出来的标签经过remap_lut之后的u_pred_sum，是0-19一共20个类别
     print("pred:{0}".format(np.bincount(u_pred_sem)))
 
     # add single scan to evaluation

@@ -161,7 +161,8 @@ class LaserScanVis:
                             face_color=self.scan.sem_label_color[..., ::-1],
                             edge_color=self.scan.sem_label_color[..., ::-1],
                             size=1)
-
+    # save semantics
+    # vispy.io.write_png("/home/gaobiao/test.png", self.sem_vis)
     # plot instances
     if self.instances:
       self.inst_vis.set_data(self.scan.points,

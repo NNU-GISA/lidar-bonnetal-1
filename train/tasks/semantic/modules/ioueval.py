@@ -58,6 +58,13 @@ class iouEval:
     # print(self.fp.shape)
     # print(self.fn.shape)
 
+  def getConf(self):
+    # remove fp and fn from confusion on the ignore classes cols and rows
+    conf = self.conf_matrix.clone().double()
+    conf[self.ignore] = 0
+    conf[:, self.ignore] = 0
+    return conf
+
   def getStats(self):
     # remove fp and fn from confusion on the ignore classes cols and rows
     conf = self.conf_matrix.clone().double()

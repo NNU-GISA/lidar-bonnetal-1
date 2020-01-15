@@ -73,6 +73,7 @@ class LaserScan:
     # if all goes well, open pointcloud
     scan = np.fromfile(filename, dtype=np.float32)
     scan = scan.reshape((-1, 4))
+    # print("{0} : {1}".format(filename, scan.shape))
 
     # put in attribute
     points = scan[:, 0:3]    # get xyz
@@ -241,6 +242,7 @@ class SemLaserScan(LaserScan):
     # if all goes well, open label
     label = np.fromfile(filename, dtype=np.int32)
     label = label.reshape((-1))
+    # print("{0} : {1}".format(filename, label.shape))
 
     # set it
     self.set_label(label)

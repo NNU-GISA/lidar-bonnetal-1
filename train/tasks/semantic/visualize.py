@@ -7,7 +7,7 @@ import yaml
 import __init__ as booger
 
 from common.laserscan import LaserScan, SemLaserScan
-from common.laserscanvis import LaserScanVis
+from common.laserscanvis_local import LaserScanVis
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser("./visualize.py")
@@ -153,4 +153,4 @@ if __name__ == '__main__':
   print("\tq: quit (exit program)")
 
   # run the visualizer
-  vis.run()
+#   vis.run()

@@ -28,7 +28,7 @@ class SemanticKitti(Dataset):
                max_points=150000,   # max number of points present in dataset
                gt=True):            # send ground truth?
     # save deats
-    self.root = os.path.join(root, "sequences")
+    self.root = root #os.path.join(root, "sequences")
     self.sequences = sequences
     self.labels = labels
     self.color_map = color_map
