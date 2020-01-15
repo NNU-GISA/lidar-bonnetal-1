@@ -1,0 +1,141 @@
+# This file is covered by the LICENSE file in the root of this project.
+name: "sposs"
+labels: 
+  0: "unlabeled"
+  1: "unchecked person"
+  2: "unchecked rider"
+  3: "unchecked car"
+  4: "person"
+  5: "person2+"
+  6: "rider"
+  7: "car"
+  8: "truck"
+  9: "vegetation"
+  10: "board1"
+  11: "board2"
+  12: "board3"
+  13: "pole"
+  14: "trash can"
+  15: "building"
+  16: "cone/stone"
+  17: "fence"
+  18: "unknown"
+  19: "mergeed objects"
+  20: "splited objects"
+  21: "bike"
+  22: "ground"
+color_map: # bgr
+  0: [0, 0, 0]
+  1: [255, 0, 0]
+  2: [255, 128, 0]
+  3: [0, 0, 255]
+  4: [255, 0, 0]
+  5: [255, 0, 0]
+  6: [255, 128, 0]
+  7: [0, 0, 255]
+  8: [0, 198, 0]
+  9: [0, 255, 0]
+  10: [255,0,255]
+  11: [255,0,192]
+  12: [255,0,128]
+  13: [192, 0, 255]
+  14: [128,0,255]
+  15: [210, 0, 0]
+  16: [252,105,2]
+  17: [128, 128, 0]
+  18: [128,192,128]
+  19: [255,128,255]
+  20: [0,128,255]
+  21: [240, 240, 0]
+  22: [117, 149, 208]
+content: # as a ratio with the total number of points
+  0:  0.0260467200 
+  1:  0.0000000000 
+  2:  0.0000000000 
+  3:  0.0000000000 
+  4:  0.0385683580 
+  5:  0.2247079920 
+  6:  0.1496647510 
+  7:  0.0070176827 
+  8:  0.0492486867 
+  9:  0.0015669443 
+  10: 0.1673628963 
+  11: 0.4243077419 
+  12: 0.3872801701 
+  13: 0.1136261631 
+  14: 0.5976786163 
+  15: 0.0029185963 
+  16: 0.2982474977 
+  17: 0.0352686412 
+  18: 0.9224922049 
+  19: 13.5482996884 
+  20: 1.0256831049 
+  21: 0.0102085213 
+  22: 0.0031655703 
+# classes that are indistinguishable from single scan or inconsistent in
+# ground truth are mapped to their closest equivalent
+learning_map:
+  0:  0     #"unlabeled"
+  1:  0     #"unchecked person"
+  2:  0     #"unchecked rider"
+  3:  0     #"unchecked car"
+  4:  1     #"person"
+  5:  1     #"person2+"
+  6:  2     #"rider"
+  7:  3     #"car"
+  8:  5     #"truck"
+  9:  6     #"vegetation"
+  10: 7     #"board1"
+  11: 7     #"board2"
+  12: 7     #"board3"
+  13: 8     #"pole"
+  14: 9     #"trash can"
+  15: 10     #"building"
+  16: 11     #"cone/stone"
+  17: 12     #"fence"
+  18: 0     #"unknown"
+  19: 0     #"mergeed objects"
+  20: 0     #"splited objects"
+  21: 4    #"bike"
+  22: 13     #"ground"
+learning_map_inv: # inverse of previous map
+  0: 0      # "unlabeled", and others ignored
+  1: 4      # "person"
+  2: 6      # "rider"
+  3: 7      # "car"
+  4: 21     # "bike"
+  5: 8      # "trunk"
+  6: 9      # "vegetation"
+  7: 10     # "board"
+  8: 13     # "pole"
+  9: 14     # "trash can"
+  10: 15    # "building"
+  11: 16    # "cone/stone"
+  12: 17    # "fence"
+  13: 22    # "ground"
+learning_ignore: # Ignore classes
+  0: True      # "unlabeled", and others ignored
+  1: False     # "person"
+  2: False     # "rider"
+  3: False     # "car"
+  4: False     # "bike"
+  5: False     # "trunk"
+  6: False     # "vegetation"
+  7: False     # "board"
+  8: False     # "pole"
+  9: False     # "trash can"
+  10: False    # "building"
+  11: False    # "cone/stone"
+  12: False    # "fence"
+  13: False    # "ground"
+split: # sequence numbers
+  train:
+    - 0
+    - 1
+    - 2
+    - 4
+    - 5
+  valid:
+    - 3
+  test:
+    - 3
