@@ -3,9 +3,11 @@
 
 import argparse
 import os
+import sys
 import yaml
 import __init__ as booger
 
+sys.path.append("./train/")
 from common.laserscan import LaserScan, SemLaserScan
 from common.laserscanvis_local import LaserScanVis
 

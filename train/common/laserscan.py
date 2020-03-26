@@ -77,7 +77,12 @@ class LaserScan:
 
     # put in attribute
     points = scan[:, 0:3]    # get xyz
+    # depth = np.linalg.norm(points, 2, axis=1)
+    # self.where = (depth != 0)
+    # points = points[self.where]
     remissions = scan[:, 3]  # get remission
+    # remissions = remissions[self.where]
+    # assert len(points) == len(remissions)
     self.set_points(points, remissions)
 
   def set_points(self, points, remissions=None):
@@ -118,6 +123,10 @@ class LaserScan:
 
     # get depth of all points
     depth = np.linalg.norm(self.points, 2, axis=1)
+    depth = np.maximum(0.01, depth)
+
+    # print("-2", depth)
+    # print("-1", np.min(depth))
 
     # get scan components
     scan_x = self.points[:, 0]
@@ -131,10 +140,14 @@ class LaserScan:
     # get projections in image coords
     proj_x = 0.5 * (yaw / np.pi + 1.0)          # in [0.0, 1.0]
     proj_y = 1.0 - (pitch + abs(fov_down)) / fov        # in [0.0, 1.0]
+    # print("1",np.min(proj_x), np.min(proj_y))
+    # print(proj_x.dtype, proj_y.dtype)
 
     # scale to image size using angular resolution
     proj_x *= self.proj_W                              # in [0.0, W]
     proj_y *= self.proj_H                              # in [0.0, H]
+    # print("2",np.min(proj_x), np.min(proj_y))
+    # print(proj_x.dtype, proj_y.dtype)
 
     # round and clamp for use as index
     proj_x = np.floor(proj_x)
@@ -146,6 +159,9 @@ class LaserScan:
     proj_y = np.minimum(self.proj_H - 1, proj_y)
     proj_y = np.maximum(0, proj_y).astype(np.int32)   # in [0,H-1]
     self.proj_y = np.copy(proj_y)  # stope a copy in original order
+
+    # print("3", np.min(proj_x), np.min(proj_y))
+    # print(proj_x.dtype, proj_y.dtype)
 
     # copy of depth in original order
     self.unproj_range = np.copy(depth)
@@ -159,8 +175,12 @@ class LaserScan:
     remission = self.remissions[order]
     proj_y = proj_y[order]
     proj_x = proj_x[order]
+    # proj_x = np.maximum(0, proj_x)
+    # proj_y = np.maximum(0, proj_y)
 
     # assing to images
+    # print("4", np.min(proj_x), np.min(proj_y))
+    # print(proj_x.dtype, proj_y.dtype)
     self.proj_range[proj_y, proj_x] = depth
     self.proj_xyz[proj_y, proj_x] = points
     self.proj_remission[proj_y, proj_x] = remission
@@ -183,7 +203,7 @@ class SemLaserScan(LaserScan):
       for key, data in sem_color_dict.items():
         if key + 1 > max_sem_key:
           max_sem_key = key + 1
-      self.sem_color_lut = np.zeros((max_sem_key + 100, 3), dtype=np.float32)
+      self.sem_color_lut = np.zeros((max_sem_key + 300, 3), dtype=np.float32)
       for key, value in sem_color_dict.items():
         self.sem_color_lut[key] = np.array(value, np.float32) / 255.0
     else:

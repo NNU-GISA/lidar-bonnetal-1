@@ -126,7 +126,9 @@ if __name__ == '__main__':
   scan_names = []
   for sequence in test_sequences:
     sequence = '{0:02d}'.format(int(sequence))
-    scan_paths = os.path.join(FLAGS.dataset, "sequences",
+    # scan_paths = os.path.join(FLAGS.dataset, "sequences",
+    #                           str(sequence), "velodyne")
+    scan_paths = os.path.join(FLAGS.dataset,
                               str(sequence), "velodyne")
     # populate the scan names
     seq_scan_names = [os.path.join(dp, f) for dp, dn, fn in os.walk(
@@ -139,7 +141,9 @@ if __name__ == '__main__':
   label_names = []
   for sequence in test_sequences:
     sequence = '{0:02d}'.format(int(sequence))
-    label_paths = os.path.join(FLAGS.dataset, "sequences",
+    # label_paths = os.path.join(FLAGS.dataset, "sequences",
+    #                            str(sequence), "labels")
+    label_paths = os.path.join(FLAGS.dataset,
                                str(sequence), "labels")
     # print(label_paths)
     # populate the label names
@@ -163,10 +167,10 @@ if __name__ == '__main__':
   # print(pred_names)
 
   # check that I have the same number of files
+  print("scans: ", len(scan_names))
   print("labels: ", len(label_names))
   print("predictions: ", len(pred_names))
-  assert(len(label_names) == len(scan_names) and
-         len(label_names) == len(pred_names))
+  assert(len(label_names) == len(scan_names) and len(label_names) == len(pred_names))
 
   print("Evaluating sequences: ")
   # open each file, get the tensor, and make the iou comparison

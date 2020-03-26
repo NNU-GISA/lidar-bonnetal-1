@@ -198,7 +198,8 @@ if __name__ == '__main__':
     pred = SemLaserScan(project=False)
     pred.open_scan(scan_file)
     pred.open_label(pred_file)
-    u_pred_sem = remap_s3d[remap_lut[pred.sem_label]]  # remap to xentropy format
+    # u_pred_sem = remap_s3d[remap_lut[pred.sem_label]]  # remap to xentropy format
+    u_pred_sem = remap_lut[pred.sem_label]  # remap to xentropy format
     if FLAGS.limit is not None:
       u_pred_sem = u_pred_sem[:FLAGS.limit]
     # 预测出来的标签经过remap_lut之后的u_pred_sum，是0-19一共20个类别

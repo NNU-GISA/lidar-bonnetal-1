@@ -88,8 +88,9 @@ class LaserScanVis:
     # self.img_vis.update()
 
     if self.semantics:
-      cv2.imwrite("/home/gaobiao/test.png", self.scan.proj_sem_color * 255)
-      print("write to /home/gaobiao/test.png  with shape {}".format(self.scan.proj_sem_color.shape))
+      cv2.imwrite("/home/gaobiao/label.png", self.scan.proj_sem_color * 255)
+      cv2.imwrite("/home/gaobiao/range.png", self.scan.proj_range)
+      print("write to /home/gaobiao/ with shape {}".format(self.scan.proj_sem_color.shape))
       print(self.scan.proj_sem_color.max(), self.scan.proj_sem_color.min())
     #   self.sem_img_vis.set_data(self.scan.proj_sem_color[..., ::-1])
     #   self.sem_img_vis.update()
