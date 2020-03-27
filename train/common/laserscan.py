@@ -125,9 +125,6 @@ class LaserScan:
     depth = np.linalg.norm(self.points, 2, axis=1)
     depth = np.maximum(0.01, depth)
 
-    # print("-2", depth)
-    # print("-1", np.min(depth))
-
     # get scan components
     scan_x = self.points[:, 0]
     scan_y = self.points[:, 1]
